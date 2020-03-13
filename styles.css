@@ -25,3 +25,8 @@ body{
   .form-control::-webkit-input-placeholder {
     color: #fff;
   }
+
+  .clock span{
+    padding: 20px;
+    background: #2F404B;
+  }

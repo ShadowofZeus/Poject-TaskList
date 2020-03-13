@@ -1,6 +1,7 @@
 const addForm = document.querySelector('.add');			//ref to form
 const list = document.querySelector('.todos');			//ref to UL
 const search = document.querySelector('.search input');
+const clock = document.querySelector('.clock');
 
 const generateTemplate = todo => {
 
@@ -59,3 +60,24 @@ search.addEventListener('keyup', () => {
 	const term = search.value.trim().toLowerCase();
 	filterTodos(term);
 });
+
+const tick = () => {
+
+	
+	const now = new Date();
+	
+	const hours = now.getHours();
+	const minutes = now.getMinutes();
+	const seconds = now.getSeconds();
+  
+	const html = `
+	  <span>${hours}</span> :
+	  <span>${minutes}</span> :
+	  <span>${seconds}</span>
+	`;
+  
+	clock.innerHTML = html;
+  
+  };
+
+  setInterval(tick,1000);   //tick is a callback function
