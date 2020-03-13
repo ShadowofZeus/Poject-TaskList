@@ -37,10 +37,35 @@
 	      <input class="form-control m-auto" type="text" name="add" placeholder="Add your task here" />
         </form>
         
-        <p class="text-center text-white">NB: Note that to delete an item, click on the bin icon </p>
+        <p class="text-center text-white">NB: Note that to ADD/DELETE a task, you need to reload the page first for it to take effect. </p>
 
   </div>
-  	<script src="http://cdn.date-fns.org/VERSION/date_fns.min.js"></script>
+  	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-analytics.js"></script>
+
+	<script>
+	// Your web app's Firebase configuration
+	var firebaseConfig = {
+		apiKey: "AIzaSyCKQwmRBD7xCiRAcuUy5Cm5aQctacIXrRs",
+		authDomain: "task-list-b5a35.firebaseapp.com",
+		databaseURL: "https://task-list-b5a35.firebaseio.com",
+		projectId: "task-list-b5a35",
+		storageBucket: "task-list-b5a35.appspot.com",
+		messagingSenderId: "671581986457",
+		appId: "1:671581986457:web:43b716f7fd5435f7c9a208",
+		measurementId: "G-Y4M5WFCEQB"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	//Creating a reference to our Firebase DB
+	const db = firebase.firestore();
+	firebase.analytics();
+	</script>
 	<script src="app.js" type="text/javascript"></script>
 </body>
 </html>
