@@ -3,8 +3,8 @@ const list = document.querySelector('.todos');			//ref to UL
 const search = document.querySelector('.search input');
 const clock = document.querySelector('.clock');
 
-//********** READING FROM DB - WORKING!! ***************************
-//Function to dynamically populate the website
+
+//Function to populate the DOM with task items
 const generateTemplate = (taskitem,id)=> {
 
 	const html = `
@@ -17,18 +17,33 @@ const generateTemplate = (taskitem,id)=> {
 	list.innerHTML += html;			//append the text into the UL
 };
 
-//Referencing the DB collection and getting the data
-db.collection('taskitems').get().then((snapshot) => {
-	//when we have the data
-	//console.log(snapshot.docs[0].data());   //how to see data inside the DB!
+//Function to delete items from the DOM when deleted from DB
 
-	snapshot.docs.forEach(doc => {
-		//console.log(doc.id);			//Each task list entry has unique DOC ID we can manipulate
-		generateTemplate(doc.data(),doc.id);
+const deleteTaskItem = (id) => {
+	const taskitems = document.querySelectorAll('li');
+	taskitems.forEach(taskitem => {
+		if(taskitem.getAttribute('data-id') === id)
+		taskitem.remove();
 	})
-}).catch((err) => {
-	console.log(err)
-})
+}
+
+//********** READING FROM DB in REALTIME -- WORKING!! ***************************
+//Function to dynamically populate the website
+
+db.collection('taskitems').onSnapshot(snapshot => {
+	// console.log(snapshot.docChanges());
+	snapshot.docChanges().forEach((changeInDB) => {
+		const doc = changeInDB.doc;
+		if(changeInDB.type === 'added')
+		{
+			generateTemplate(doc.data(),doc.id);
+		}
+		else if(changeInDB.type === 'removed')
+		{
+			deleteTaskItem(doc.id);
+		}
+	})
+});
 
 // ********************END OF READING FROM DB CODE  **********************
 
@@ -36,18 +51,6 @@ db.collection('taskitems').get().then((snapshot) => {
 addForm.addEventListener('submit', e => {
 
 	e.preventDefault();							//prevent reloading of page.
-	// todoItem = addForm.add.value.trim();            //formClass.inputName.value //trim to remove whitespace
-	// //console.log(todoItem);						//show submitted value
-	// if(todoItem.length)
-	// {
-	// 	//if there is text content in submit box
-	// 	generateTemplate(todoItem);
-	// 	addForm.reset();			//reset form input fields
-	// }
-	// else
-	// {
-	// 	alert('kindly write an activity in the text box')
-	// }
 
 	const taskitem = {
 		taskname: addForm.add.value.trim(),
@@ -59,6 +62,8 @@ addForm.addEventListener('submit', e => {
 	}).catch((err) => {
 		console.log(err);
 	})
+
+	addForm.reset();
 });
 
 //Trash Can functionality - we cant attach the event to EVery trash can as this 
